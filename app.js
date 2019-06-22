@@ -4,7 +4,7 @@ const cors = require('cors');
 const fs = require('fs');
 const app = express();
 
-if (fs.existsSync("public/storage")) {
+if (!fs.existsSync("public/storage")) {
     fs.mkdirSync("public/storage");
 }
 
