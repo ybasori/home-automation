@@ -1,6 +1,7 @@
 <html>
     <head></head>
     <body>
+        <div id="result"></div>
             <script src="/socket.io/socket.io.js"></script>
             <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
             <script>
@@ -8,7 +9,7 @@
                 var socket = io();
                 var device_id = "-LhcedV_9_NOlNs9flKM";
                 socket.on(device_id, function(res){
-                    console.log(res);
+                    $("#result").html("<img src='/storage/"+res.image+"'>");
                 });
               });
             </script>
