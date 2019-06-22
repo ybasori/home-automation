@@ -3,6 +3,24 @@ const multer  = require('multer');
 const cors = require('cors');
 const fs = require('fs');
 const app = express();
+const http = require('http').createServer(app);
+
+const serviceAccount = require("./secret/yusuf-9c0ce-firebase-adminsdk-xplsl-2a746630c9.json");
+const admin = require('firebase-admin');
+admin.initializeApp({
+    credential: admin.credential.cert(serviceAccount),
+    databaseURL: "https://yusuf-9c0ce.firebaseio.com",
+    storageBucket: "yusuf-9c0ce.appspot.com"
+});
+
+const db = admin.database();
+const ref = db.ref("home");
+// Attach an asynchronous callback to read the data at our posts reference
+ref.on("devieces/-LhcedV_9_NOlNs9flKM/current_cam", function(snapshot) {
+    console.log(snapshot.val());
+}, function (errorObject) {
+    console.log("The read failed: " + errorObject.code);
+});
 
 if (!fs.existsSync("public/storage")) {
     fs.mkdirSync("public/storage");
@@ -33,6 +51,7 @@ app.post('/upload',
         
     }).any(),
     function (req, res, next) {
+        
         return res.status(200).json(req.body);
 })
 
@@ -54,6 +73,6 @@ app.get('/list', function(req, res){
 
 var port=Number(process.env.PORT || 3000)
 
-app.listen(port, function(){
-    console.log(`App start at port ${port}`);
-})
+http.listen(port, function(){
+    console.log('listening on *:3000');
+});
