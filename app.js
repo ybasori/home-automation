@@ -49,4 +49,6 @@ app.get('/', function (req, res) {
     return res.send('Hello World')
 })
 
-app.listen(80)
+var port=Number(process.env.PORT || 80)
+
+app.listen(port)
