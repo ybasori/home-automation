@@ -36,7 +36,7 @@ app.post('/upload',
 app.get('/', function (req, res) {
 
     return res.send('Hello World');
-    
+
 })
 
 app.get('/list', function(req, res){
@@ -50,4 +50,6 @@ app.get('/list', function(req, res){
 
 var port=Number(process.env.PORT || 3000)
 
-app.listen(port)
+app.listen(port, function(){
+    console.log(`App start at port ${port}`);
+})
