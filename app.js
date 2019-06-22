@@ -4,6 +4,11 @@ const cors = require('cors');
 const fs = require('fs');
 const app = express();
 
+const fs = require("fs"); // Or `import fs from "fs";` with ESM
+if (fs.existsSync("public/storage")) {
+    fs.mkdirSync("public/storage");
+}
+
 app.use(function(req, res, next){
     next();
 });
