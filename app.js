@@ -1,35 +1,23 @@
 const express = require('express');
 const multer  = require('multer');
 const cors = require('cors');
+const fs = require('fs');
 const app = express();
 
-var middlewares = [
-    
-];
 app.use(function(req, res, next){
     next();
 });
 
 
-var whitelist = ['http://localhost:3000']
-var corsOptions = {
-  origin: function (origin, callback) {
-    if (whitelist.indexOf(origin) !== -1) {
-      callback(null, true)
-    } else {
-      callback(new Error('Not allowed by CORS'))
-    }
-  }
-}
-// app.use(cors(corsOptions));
 app.use(cors());
 
+app.use('/', express.static('public'))
 
 app.post('/upload',
     multer({
         storage: multer.diskStorage({
             destination: function(req, file, cb){
-                cb(null, "uploads/");
+                cb(null, "public/storage/");
             },
             filename   : function (req, file, cb) {
                 cb(null, file.originalname);
@@ -46,9 +34,20 @@ app.post('/upload',
 
 
 app.get('/', function (req, res) {
-    return res.send('Hello World')
+
+    return res.send('Hello World');
+    
 })
 
-var port=Number(process.env.PORT || 80)
+app.get('/list', function(req, res){
+
+    var testFolder = 'public/storage/';
+    fs.readdir(testFolder, (err, files) => {
+        return res.status(200).json(files);
+    });
+
+});
+
+var port=Number(process.env.PORT || 3000)
 
 app.listen(port)
