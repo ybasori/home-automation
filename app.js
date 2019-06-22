@@ -16,10 +16,12 @@ admin.initializeApp({
 
 const db = admin.database();
 io.on('connection', function(socket){
-    let device_id = "-LhcedV_9_NOlNs9flKM";
-    let ref = db.ref("home/devices/"+device_id+"/current_cam");
+    var device_id = "-LhcedV_9_NOlNs9flKM";
+    var ref = db.ref("home/devices/"+device_id+"/current_cam");
+    // Attach an asynchronous callback to read the data at our posts reference
     ref.on("value", function(snapshot) {
         io.emit(device_id, snapshot.val());
+        console.log(snapshot.val());
     }, function (errorObject) {
         console.log("The read failed: " + errorObject.code);
     });
