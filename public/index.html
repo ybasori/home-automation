@@ -11,6 +11,7 @@
                 socket.on(device_id, function(res){
                     // $("#result").html("<img src='/storage/"+res.image+"'>");
                     $("#result").attr("src","/storage/"+res.image);
+                    console.log(res);
                 });
               });
             </script>
