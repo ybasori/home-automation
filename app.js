@@ -14,9 +14,9 @@ admin.initializeApp({
 });
 
 const db = admin.database();
-const ref = db.ref("home");
+const ref = db.ref("home/devices/-LhcedV_9_NOlNs9flKM/current_cam");
 // Attach an asynchronous callback to read the data at our posts reference
-ref.on("devieces/-LhcedV_9_NOlNs9flKM/current_cam", function(snapshot) {
+ref.on("value", function(snapshot) {
     console.log(snapshot.val());
 }, function (errorObject) {
     console.log("The read failed: " + errorObject.code);
