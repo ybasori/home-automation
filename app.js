@@ -4,6 +4,7 @@ const cors = require('cors');
 const fs = require('fs');
 const app = express();
 const http = require('http').createServer(app);
+const io = require('socket.io')(http);
 
 const serviceAccount = require("./secret/yusuf-9c0ce-firebase-adminsdk-xplsl-2a746630c9.json");
 const admin = require('firebase-admin');
@@ -14,13 +15,16 @@ admin.initializeApp({
 });
 
 const db = admin.database();
-const ref = db.ref("home/devices/-LhcedV_9_NOlNs9flKM/current_cam");
-// Attach an asynchronous callback to read the data at our posts reference
-ref.on("value", function(snapshot) {
-    console.log(snapshot.val());
-}, function (errorObject) {
-    console.log("The read failed: " + errorObject.code);
+io.on('connection', function(socket){
+    let device_id = "-LhcedV_9_NOlNs9flKM";
+    let ref = db.ref("home/devices/"+device_id+"/current_cam");
+    ref.on("value", function(snapshot) {
+        io.emit(device_id, snapshot.val());
+    }, function (errorObject) {
+        console.log("The read failed: " + errorObject.code);
+    });
 });
+
 
 if (!fs.existsSync("public/storage")) {
     fs.mkdirSync("public/storage");
