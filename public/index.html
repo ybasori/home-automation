@@ -6,10 +6,9 @@
             <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
             <script>
               $(function () {
-                var socket = io();
+                var socket = io.connect("http://103.28.52.114:3000");
                 var device_id = "-LhcedV_9_NOlNs9flKM";
                 socket.on(device_id, function(res){
-                    // $("#result").html("<img src='/storage/"+res.image+"'>");
                     $("#result").attr("src","/storage/"+res.image);
                     console.log(res);
                 });
