@@ -28,9 +28,13 @@ io.on('connection', function(socket){
     
 
     var glob = require("glob");
-    var files = glob.readdirSync('public/storage/-LhcedV_9_NOlNs9flKM___2019062307*', {});
+    // var files = glob.readdirSync('public/storage/-LhcedV_9_NOlNs9flKM___2019062307*', {});
 
-    io.emit(device_id+"-recorded", files);
+    // io.emit(device_id+"-recorded", files);
+
+    glob("public/storage/-LhcedV_9_NOlNs9flKM___2019062307*", options, function (er, files) {
+        io.emit(device_id+"-recorded", files);
+    })
 });
 
 
