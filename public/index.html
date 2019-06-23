@@ -3,6 +3,7 @@
     <body>
         <div id="stream">
             <img id="result" />
+            <div id="time"></div>
         </div>
         <div id="recorded">
 
@@ -14,7 +15,7 @@
             var device_id = "-LhcedV_9_NOlNs9flKM";
             socket.on(device_id, function(res){
                 $("#result").attr("src","/storage/"+res.image);
-                console.log(res);
+                $("#time").html(new Date(res.time));
             });
             socket.on(device_id+"-recorded", function(res){;
                 console.log(res);
