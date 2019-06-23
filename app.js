@@ -32,7 +32,7 @@ io.on('connection', function(socket){
 
     // io.emit(device_id+"-recorded", files);
 
-    glob("public/storage/-LhcedV_9_NOlNs9flKM___2019062307*", options, function (er, files) {
+    glob("public/storage/-LhcedV_9_NOlNs9flKM___2019062307*", function (er, files) {
         io.emit(device_id+"-recorded", files);
     })
 });
