@@ -25,13 +25,12 @@ io.on('connection', function(socket){
         console.log("The read failed: " + errorObject.code);
     });
 
-    var nittime = new Date("2019-06-23 07:00").getTime();
-    var nittime_2 = new Date("2019-06-23 07:59").getTime();
+    
 
-    io.emit(device_id, [nittime, nittime_2]);
+    var glob = require("glob");
+    var files = glob.readdirSync('public/storage/-LhcedV_9_NOlNs9flKM___2019062307*', {});
 
-    // var glob = require("glob");
-    // var files = glob.readdirSync('public/storage/-LhcedV_9_NOlNs9flKM___', {});
+    io.emit(device_id+"-recorded", files);
 });
 
 
