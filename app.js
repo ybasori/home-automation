@@ -1,94 +1,72 @@
-const express = require('express');
-const multer  = require('multer');
-const cors = require('cors');
-const fs = require('fs');
-const app = express();
-const http = require('http').createServer(app);
-const io = require('socket.io')(http);
+const fs             = require('fs');
+const express        = require('express');
+const app            = express();
+const http           = require('http').createServer(app);
+const io             = require('socket.io')(http);
 
-const serviceAccount = require("./secret/yusuf-9c0ce-firebase-adminsdk-xplsl-2a746630c9.json");
-const admin = require('firebase-admin');
-admin.initializeApp({
-    credential: admin.credential.cert(serviceAccount),
-    databaseURL: "https://yusuf-9c0ce.firebaseio.com",
-    storageBucket: "yusuf-9c0ce.appspot.com"
-});
 
-const db = admin.database();
+
+const Config         = require(`${__dirname}/configs/config.js`);
+const routes_web     = require(`${__dirname}/app/routes/web.js`)(express);
+const routes_api     = require(`${__dirname}/app/routes/api.js`)(express);
+const middleware     = require(`${__dirname}/app/middlewares/web_middleware.js`);
+const middleware_api = require(`${__dirname}/app/middlewares/api_middleware.js`);
+
+
+
+app.set('view engine', 'ejs');
+app.use('/', middleware, routes_web);
+app.use('/api', middleware_api, routes_api);
+
+
+
+if (!fs.existsSync(`${Config.dir.storage}`)) fs.mkdirSync(`${Config.dir.storage}`);
+if (!fs.existsSync(`${Config.dir.public}`)) fs.mkdirSync(`${Config.dir.public}`);
+
+
+
+app.use('/', express.static('public'));
+app.use('/storage', express.static('storage'));
+
+
+
+const port           = Number(process.env.PORT || Config.port);
+http.listen(port, function(){ console.log('listening on *:3000'); });
+
+
+
+const devices    = [
+    "-LhcedV_9_NOlNs9flKM"
+];
+
+const firebase   = require(`${__dirname}/app/libraries/Firebase.js`);
+const fb_db      = firebase.database();
 io.on('connection', function(socket){
-    var device_id = "-LhcedV_9_NOlNs9flKM";
-    var ref = db.ref("home/devices/"+device_id+"/current_cam");
-    // Attach an asynchronous callback to read the data at our posts reference
-    ref.on("value", function(snapshot) {
-        io.emit(device_id, snapshot.val());
-    }, function (errorObject) {
-        console.log("The read failed: " + errorObject.code);
-    });
+    for(var i = 0; i<devices.length; i++){
 
-    
-
-    var glob = require("glob");
-    // var files = glob.readdirSync('public/storage/-LhcedV_9_NOlNs9flKM___2019062307*', {});
-
-    // io.emit(device_id+"-recorded", files);
-
-    glob("public/storage/-LhcedV_9_NOlNs9flKM___2019062309*", function (er, files) {
-        io.emit(device_id+"-recorded", files);
-    })
-});
+        var device_id = devices[i];
+        var ref = fb_db.ref("home/devices/"+device_id+"/current_cam");
+        // Attach an asynchronous callback to read the data at our posts reference
+        ref.on("value", function(snapshot) {
+            io.emit(device_id, snapshot.val());
+        }, function (errorObject) {
+            console.log("The read failed: " + errorObject.code);
+        });
 
 
-if (!fs.existsSync("public/storage")) {
-    fs.mkdirSync("public/storage");
-}
 
-app.use(function(req, res, next){
-    next();
-});
+        var glob = require("glob");
+        // var files = glob.readdirSync('public/storage/-LhcedV_9_NOlNs9flKM___2019062307*', {});
 
+        // io.emit(device_id+"-recorded", files);
 
-app.use(cors());
-
-app.use('/', express.static('public'))
-
-app.post('/upload',
-    multer({
-        storage: multer.diskStorage({
-            destination: function(req, file, cb){
-                cb(null, "public/storage/");
-            },
-            filename   : function (req, file, cb) {
-                cb(null, file.originalname);
-            },
-            fileFilter: function(req, file, cb) {
-                cb(null, true)
-            }
+        glob(`public/storage/${device_id}___2019062309*`, function (er, files) {
+            io.emit(device_id+"-recorded", files);
         })
-        
-    }).any(),
-    function (req, res, next) {
-        
-        return res.status(200).json(req.body);
-})
-
-
-app.get('/', function (req, res) {
-
-    return res.send('Hello World');
-
-})
-
-app.get('/list', function(req, res){
-
-    var testFolder = 'public/storage/';
-    fs.readdir(testFolder, (err, files) => {
-        return res.status(200).json(files);
-    });
-
+    }
+    
 });
 
-var port=Number(process.env.PORT || 3000)
 
-http.listen(port, function(){
-    console.log('listening on *:3000');
-});
+
+
