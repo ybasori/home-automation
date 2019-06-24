@@ -13,20 +13,23 @@ const middleware     = require(`${__dirname}/app/middlewares/web_middleware.js`)
 const middleware_api = require(`${__dirname}/app/middlewares/api_middleware.js`);
 
 
-
-app.set('view engine', 'ejs');
-app.use('/', middleware, routes_web);
-app.use('/api', middleware_api, routes_api);
-
-
-
 if (!fs.existsSync(`${Config.dir.storage}`)) fs.mkdirSync(`${Config.dir.storage}`);
 if (!fs.existsSync(`${Config.dir.public}`)) fs.mkdirSync(`${Config.dir.public}`);
 
 
 
+app.set('view engine', 'ejs');
+
+
+
 app.use('/', express.static('public'));
 app.use('/storage', express.static('storage'));
+
+
+
+app.use('/', middleware, routes_web);
+app.use('/api', middleware_api, routes_api);
+
 
 
 
