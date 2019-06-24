@@ -1,4 +1,4 @@
-const serviceAccount = require(`${__dirname}/../secrets/yusuf-9c0ce-firebase-adminsdk-xplsl-2a746630c9.json`);
+const serviceAccount = require(`${__dirname}/app/secrets/yusuf-9c0ce-firebase-adminsdk-xplsl-2a746630c9.json`);
 const admin = require('firebase-admin');
 admin.initializeApp({
     credential: admin.credential.cert(serviceAccount),
