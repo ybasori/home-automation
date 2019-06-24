@@ -10,5 +10,6 @@ module.exports = {
         controller : dir+"/app/controllers",
         view       : dir+"/app/views",
     },
-    port : 3000
+    port     : 3000,
+    base_url : "http://localhost"
 }
