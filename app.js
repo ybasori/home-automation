@@ -55,16 +55,6 @@ io.on('connection', function(socket){
             console.log("The read failed: " + errorObject.code);
         });
 
-
-
-        var glob = require("glob");
-        // var files = glob.readdirSync('public/storage/-LhcedV_9_NOlNs9flKM___2019062307*', {});
-
-        // io.emit(device_id+"-recorded", files);
-
-        glob(`public/storage/${device_id}___2019062309*`, function (er, files) {
-            io.emit(device_id+"-recorded", files);
-        })
     }
     
 });

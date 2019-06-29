@@ -22,5 +22,30 @@ module.exports = {
             return res.status(200).json(files);
         });
 
+
+        var glob = require("glob");
+
+        glob(`${storage}/${req.params.code}*`, function (err, files) {
+            // if(err){
+            //     return res.status(400).json({
+            //         msg: "something went wrong!"
+            //     });
+            // }
+            // else{
+            //     return res.status(200).json({
+            //         msg: "successfully retrieved!",
+            //         data: files
+            //     });
+            // }
+
+            return res.render(`${Config.dir.view}/pages/recorded/index`, {
+                glob: {
+                    err   : err,
+                    files : files
+                }
+            });
+            
+        })
+
     }
 }
