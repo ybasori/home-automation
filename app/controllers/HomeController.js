@@ -38,6 +38,10 @@ module.exports = {
             //     });
             // }
 
+            for(var i=0;i<files.length;i++){
+                files[i]=files[i].replace(storage,"storage");
+            }
+
             return res.render(`${Config.dir.view}/pages/recorded/index`, {
                 glob: {
                     err   : err,
