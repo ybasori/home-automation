@@ -25,7 +25,7 @@ module.exports = {
 
         var glob = require("glob");
 
-        glob(`${storage}/${req.params.code}*`, function (err, files) {
+        glob(`public/storage/${req.params.code}*`, function (err, files) {
             // if(err){
             //     return res.status(400).json({
             //         msg: "something went wrong!"
