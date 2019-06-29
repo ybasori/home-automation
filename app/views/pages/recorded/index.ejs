@@ -12,7 +12,10 @@
     <% }else{ %>
         <div>
             <% glob.files.forEach(function(value, key){ %>
-                <%= value %>
+                <div>
+                    <img src="<%= value %>" class="frames" data-key="<%= key %>" style="<%= (key==0)?'':'display: none;' %>" />
+                </div>
+                <div></div>
             <% }) %>
         </div>
     <% } %>

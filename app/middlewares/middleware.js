@@ -5,6 +5,6 @@ module.exports = {
 
     ],
     api: [
-        cors()
+        // cors()
     ]
 }
