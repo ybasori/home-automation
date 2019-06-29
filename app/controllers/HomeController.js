@@ -17,10 +17,10 @@ module.exports = {
 
     recorded: function(req, res){
 
-        var storage = Config.dir.storage;
-        fs.readdir(storage, (err, files) => {
-            return res.status(200).json(files);
-        });
+        // var storage = Config.dir.storage;
+        // fs.readdir(storage, (err, files) => {
+        //     return res.status(200).json(files);
+        // });
 
 
         var glob = require("glob");
