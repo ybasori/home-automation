@@ -21,8 +21,8 @@ app.set('view engine', 'ejs');
 
 
 
-app.use('/', express.static('public'));
-app.use('/storage', express.static('storage'));
+app.use('/', express.static(__dirname + '/public'));
+app.use('/storage', express.static(__dirname + '/storage'));
 
 
 
