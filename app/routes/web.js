@@ -11,8 +11,7 @@ module.exports = function(express){
     const app = express.Router();
     
     app.get('/', Home.index);
-    app.post('/upload', Home.upload);
-    app.get('/list', Home.list);
+    app.get('/recorded/:code', Home.recorded);
 
     return app;
 }

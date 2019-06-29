@@ -9,8 +9,7 @@ const io             = require('socket.io')(http);
 const Config         = require(`${__dirname}/configs/config.js`);
 const routes_web     = require(`${__dirname}/app/routes/web.js`)(express);
 const routes_api     = require(`${__dirname}/app/routes/api.js`)(express);
-const middleware     = require(`${__dirname}/app/middlewares/web_middleware.js`);
-const middleware_api = require(`${__dirname}/app/middlewares/api_middleware.js`);
+const middleware     = require(`${__dirname}/app/middlewares/middleware.js`);
 
 
 if (!fs.existsSync(`${Config.dir.storage}`)) fs.mkdirSync(`${Config.dir.storage}`);
@@ -27,8 +26,8 @@ app.use('/storage', express.static('storage'));
 
 
 
-app.use('/', middleware, routes_web);
-app.use('/api', middleware_api, routes_api);
+app.use('/', middleware.web, routes_web);
+app.use('/api', middleware.api, routes_api);
 
 
 
